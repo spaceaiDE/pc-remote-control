@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Control</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+    <div class="container">
+        <button type="danger" onclick="sendCommand({command: 'shutdown'})">Herunterfahren</button>
+        <button onclick="sendCommand({command: 'openapp', app_name: 'spotify.exe'})">Spotify öffnen</button>
+        <button onclick="sendCommand({command: 'openapp', app_name: 'www.youtube.com'})">Youtube öffnen</button>
+        <button onclick="sendCommand({command: 'closeapp', app_name: 'firefox'})">Firefox schließen</button>
+        <button onclick="sendCommand({command: 'closeapp', app_name: 'spotify'})">Spotify schließen</button>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
