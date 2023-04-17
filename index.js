@@ -2,6 +2,7 @@ const express = require("express")
 const path = require("path")
 const fs = require("fs")
 const childprocess = require("child_process")
+const robot = require("robotjs")
 
 const application = express()
 
@@ -18,22 +19,48 @@ String.prototype.replaceAll = function(old, newRep) {
     return string
 }
 
+const whitelist = new Array()
+
 application.use("/", express.static(path.join(__dirname, "public")))
 
 application.get("/", (request, response) => {
-    const ipWhitelist = fs.readFileSync("whitelist.txt").toString().replaceAll("\r", "").split("\n")
-    if(!ipWhitelist.find(ip => request.ip.includes(ip))) {
-        response.json({
-            error: "You're not allowed to do that"
-        })
+    const {ip} = request
+    if(!whitelist.includes(ip)) {
+        response.sendFile(path.join(__dirname, "page", "login.html"))
         return
     }
     response.sendFile(path.join(__dirname, "page", "index.html"))
 })
 
+application.post("/login", (req,res) => {
+    if(!req.body) {
+        res.json({
+            error: "No content provided"
+        })
+        return
+    }
+    const {pass} = req.body
+    if(!pass) {
+        res.json({
+            error: "No password provided"
+        })
+        return
+    }
+    if(pass == "17Leon04") {
+        whitelist.push(req.ip)
+        res.json({
+            success: true
+        })
+    } else {
+        res.json({
+            error: "Password is incorrect"
+        })
+    }
+})
+
 application.post("/command", (request, response) => {
-    const ipWhitelist = fs.readFileSync("whitelist.txt").toString().replaceAll("\r", "").split("\n")
-    if(!ipWhitelist.find(ip => request.ip.includes(ip))) {
+    const {ip} = request
+    if(!whitelist.includes(ip)) {
         response.json({
             error: "You're not allowed to do that"
         })
@@ -49,6 +76,20 @@ application.post("/command", (request, response) => {
                 success: true
             })
             childprocess.execSync("shutdown /s")
+            break;
+        }
+        case "login": {
+            response.json({
+                success: true
+            })
+            ;(async () => {
+                async function sleep(ms) {
+                    return new Promise(res => setTimeout(res, ms))
+                }
+                const {height, width} = robot.getScreenSize()
+
+                robot.moveMouseSmooth(Math.floor(Math.random()*width), Math.floor(Math.random()*height), 1)
+            })()
             break;
         }
         case "openapp": {
